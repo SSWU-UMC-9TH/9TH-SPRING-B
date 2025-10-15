@@ -12,7 +12,11 @@ import spring.umc.domain.member.entity.Member;
 @Getter
 @Table(
         name = "member_food",
-        uniqueConstraints = @UniqueConstraint(columnNames = {"member_id","food_id"})
+        uniqueConstraints = @UniqueConstraint(columnNames = {"member_id","food_id"}),
+        indexes = {
+                @Index(name = "idx_member_food_member_id", columnList = "member_id"),
+                @Index(name = "idx_member_food_food_id",   columnList = "food_id")
+        }
 )
 public class MemberFood {
 
