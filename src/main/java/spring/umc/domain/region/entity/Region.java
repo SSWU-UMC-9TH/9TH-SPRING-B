@@ -19,7 +19,7 @@ public class Region implements Serializable {
     @Column(name = "region_id")
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "parent_id")
     private Region parent;
 

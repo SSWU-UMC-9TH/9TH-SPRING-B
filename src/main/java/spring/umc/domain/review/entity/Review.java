@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.*;
 import spring.umc.domain.user.entity.User;
 import spring.umc.domain.store.entity.Store;
+import spring.umc.domain.user.entity.UserMission;
+
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -33,11 +35,11 @@ public class Review implements Serializable {
 
     private LocalDateTime updatedAt;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "store_id", nullable = false)
     private Store store;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
@@ -46,4 +48,8 @@ public class Review implements Serializable {
 
     @OneToMany(mappedBy = "review", cascade = CascadeType.ALL)
     private List<ReviewImg> images;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_mission_id")
+    private UserMission userMission;
 }

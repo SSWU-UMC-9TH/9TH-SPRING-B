@@ -21,7 +21,7 @@ public class UserMission {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private MissionState state = MissionState.NOT_STARTED;
+    private MissionStatus status = MissionStatus.NOT_STARTED;
 
     @Column(nullable = false)
     private LocalDateTime createdAt = LocalDateTime.now();
@@ -35,8 +35,4 @@ public class UserMission {
     @ManyToOne
     @JoinColumn(name = "mission_id", nullable = false)
     private Mission mission;
-
-    public enum MissionState {
-        NOT_STARTED, IN_PROGRESS, COMPLETED
-    }
 }
