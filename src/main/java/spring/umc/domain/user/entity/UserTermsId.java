@@ -6,8 +6,7 @@ import java.io.Serializable;
 // 복합키 표현용 클래스
 @Getter
 @Setter
-@NoArgsConstructor
-@AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @EqualsAndHashCode
 public class UserTermsId implements Serializable {
     private Long userId;

@@ -2,16 +2,14 @@ package spring.umc.domain.user.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.data.annotation.CreatedDate;
 import spring.umc.domain.terms.entity.Terms;
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "user_terms")
 @Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @IdClass(UserTermsId.class)
 public class UserTerms {
 
@@ -23,12 +21,12 @@ public class UserTerms {
     @Column(name = "terms_id")
     private Long termsId;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @MapsId("userId")
     @JoinColumn(name = "user_id")
     private User user;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @MapsId("termsId")
     @JoinColumn(name = "terms_id")
     private Terms terms;
@@ -36,5 +34,6 @@ public class UserTerms {
     @Column(nullable = false)
     private Boolean agreed;
 
+    @CreatedDate
     private LocalDateTime agreedAt;
 }

@@ -2,15 +2,13 @@ package spring.umc.domain.user.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import spring.umc.domain.common.BaseEntity;
 
 @Entity
 @Table(name = "user_address")
 @Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
-public class UserAddress {
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+public class UserAddress extends BaseEntity {
 
     @Id
     @Column(name = "user_id")
@@ -29,4 +27,5 @@ public class UserAddress {
 
     @Column(length = 50)
     private String detailAddress;
+
 }

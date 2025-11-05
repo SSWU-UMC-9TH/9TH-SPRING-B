@@ -2,6 +2,8 @@ package spring.umc.domain.user.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import spring.umc.domain.common.BaseEntity;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -9,11 +11,8 @@ import java.util.List;
 @Entity
 @Table(name = "users")
 @Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
-public class User {
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+public class User extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -41,18 +40,12 @@ public class User {
     @Column(nullable = false)
     private Integer point = 0;
 
-    @Column(nullable = false)
-    private LocalDateTime createdAt = LocalDateTime.now();
-
-    private LocalDateTime updatedAt;
-
     @Enumerated(EnumType.STRING)
     private Provider provider;
 
     @Column(length = 50)
     private String providerId;
 
-    // ✅ 연관 관계
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     private UserAddress userAddress;
 

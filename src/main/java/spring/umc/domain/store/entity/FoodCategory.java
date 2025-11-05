@@ -7,10 +7,7 @@ import java.io.Serializable;
 @Entity
 @Table(name = "food_category")
 @Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class FoodCategory implements Serializable {
 
     @Id

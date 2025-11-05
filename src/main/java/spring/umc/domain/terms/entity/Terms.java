@@ -2,17 +2,16 @@ package spring.umc.domain.terms.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import spring.umc.domain.common.BaseEntity;
+
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "terms")
 @Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
-public class Terms implements Serializable {
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+public class Terms extends BaseEntity implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,11 +27,6 @@ public class Terms implements Serializable {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private TermsType type;
-
-    @Column(nullable = false)
-    private LocalDateTime createdAt = LocalDateTime.now();
-
-    private LocalDateTime updatedAt;
 
     public enum TermsType {
         mandatory, optional

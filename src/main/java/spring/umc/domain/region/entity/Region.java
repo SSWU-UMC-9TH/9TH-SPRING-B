@@ -8,10 +8,7 @@ import java.util.List;
 @Entity
 @Table(name = "region")
 @Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Region implements Serializable {
 
     @Id

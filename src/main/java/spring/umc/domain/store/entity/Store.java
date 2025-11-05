@@ -2,6 +2,7 @@ package spring.umc.domain.store.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import spring.umc.domain.common.BaseEntity;
 import spring.umc.domain.region.entity.Region;
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -9,11 +10,8 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "store")
 @Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
-public class Store implements Serializable {
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+public class Store extends BaseEntity implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,17 +31,14 @@ public class Store implements Serializable {
     @Column(nullable = false)
     private Provider provider;
 
-    @Column(length = 255, nullable = false)
+    @Column(nullable = false)
     private String externalPlaceId;
 
-    @Column(nullable = false)
-    private LocalDateTime createdAt = LocalDateTime.now();
-
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "food_category_id", nullable = false)
     private FoodCategory foodCategory;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "region_id", nullable = false)
     private Region region;
 

@@ -2,17 +2,15 @@ package spring.umc.domain.user.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import spring.umc.domain.common.BaseEntity;
 import spring.umc.domain.mission.entity.Mission;
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "user_mission")
 @Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
-public class UserMission {
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+public class UserMission extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,16 +21,11 @@ public class UserMission {
     @Column(nullable = false)
     private MissionStatus status = MissionStatus.NOT_STARTED;
 
-    @Column(nullable = false)
-    private LocalDateTime createdAt = LocalDateTime.now();
-
-    private LocalDateTime updatedAt;
-
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "mission_id", nullable = false)
     private Mission mission;
 }

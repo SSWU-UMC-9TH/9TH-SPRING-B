@@ -2,6 +2,7 @@ package spring.umc.domain.mission.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import spring.umc.domain.common.BaseEntity;
 import spring.umc.domain.store.entity.Store;
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -9,11 +10,8 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "mission")
 @Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
-public class Mission implements Serializable {
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+public class Mission extends BaseEntity implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,12 +26,6 @@ public class Mission implements Serializable {
 
     @Column(nullable = false)
     private LocalDateTime deadline;
-
-    @Column(nullable = false)
-    private LocalDateTime createdAt = LocalDateTime.now();
-
-    @Column(nullable = false)
-    private LocalDateTime updatedAt = LocalDateTime.now();
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "store_id", nullable = false)
