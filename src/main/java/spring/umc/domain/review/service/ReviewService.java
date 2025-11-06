@@ -1,17 +1,18 @@
 package spring.umc.domain.review.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import spring.umc.domain.review.dto.MyReviewResponseDto;
 import spring.umc.domain.review.entity.Review;
 import spring.umc.domain.review.repository.ReviewRepository;
-import spring.umc.domain.store.entity.Store;
-import spring.umc.domain.store.repository.StoreRepository;
 import spring.umc.domain.user.entity.MissionStatus;
-import spring.umc.domain.user.entity.User;
 import spring.umc.domain.user.entity.UserMission;
 import spring.umc.domain.user.repository.UserMissionRepository;
-import spring.umc.domain.user.repository.UserRepository;
 
 @Service
 @RequiredArgsConstructor
@@ -42,5 +43,16 @@ public class ReviewService {
 
         // 3. 생성된 리뷰 저장
         return reviewRepository.save(newReview);
+    }
+
+    @Transactional
+    public Page<MyReviewResponseDto> getMyReviews(Long userId,
+                                                  Long storeId,
+                                                  String storeName,
+                                                  Integer star,
+                                                  int page,
+                                                  int size) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "createdAt"));
+        return reviewRepository.searchMyReviews(userId, storeId, storeName, star, pageable);
     }
 }

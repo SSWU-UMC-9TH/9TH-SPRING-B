@@ -15,7 +15,7 @@ public class UserAddress extends BaseEntity {
     private Long userId;
 
     @MapsId
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
 
