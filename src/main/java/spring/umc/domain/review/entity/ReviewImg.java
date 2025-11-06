@@ -2,10 +2,9 @@ package spring.umc.domain.review.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
-import spring.umc.domain.common.BaseEntity;
+import spring.umc.domain.common.entity.BaseEntity;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "review_img")

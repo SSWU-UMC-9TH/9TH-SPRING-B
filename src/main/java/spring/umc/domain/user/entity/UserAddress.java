@@ -2,7 +2,7 @@ package spring.umc.domain.user.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
-import spring.umc.domain.common.BaseEntity;
+import spring.umc.domain.common.entity.BaseEntity;
 
 @Entity
 @Table(name = "user_address")

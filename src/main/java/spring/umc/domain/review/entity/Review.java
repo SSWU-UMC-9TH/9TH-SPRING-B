@@ -2,7 +2,7 @@ package spring.umc.domain.review.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
-import spring.umc.domain.common.BaseEntity;
+import spring.umc.domain.common.entity.BaseEntity;
 import spring.umc.domain.user.entity.User;
 import spring.umc.domain.store.entity.Store;
 import spring.umc.domain.user.entity.UserMission;

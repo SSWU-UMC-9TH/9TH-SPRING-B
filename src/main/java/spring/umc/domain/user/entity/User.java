@@ -2,10 +2,9 @@ package spring.umc.domain.user.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
-import spring.umc.domain.common.BaseEntity;
+import spring.umc.domain.common.entity.BaseEntity;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity

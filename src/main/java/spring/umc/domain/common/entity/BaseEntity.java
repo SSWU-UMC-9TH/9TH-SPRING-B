@@ -1,4 +1,4 @@
-package spring.umc.domain.common;
+package spring.umc.domain.common.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.EntityListeners;

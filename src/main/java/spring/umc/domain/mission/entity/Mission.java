@@ -2,7 +2,7 @@ package spring.umc.domain.mission.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
-import spring.umc.domain.common.BaseEntity;
+import spring.umc.domain.common.entity.BaseEntity;
 import spring.umc.domain.store.entity.Store;
 import java.io.Serializable;
 import java.time.LocalDateTime;
