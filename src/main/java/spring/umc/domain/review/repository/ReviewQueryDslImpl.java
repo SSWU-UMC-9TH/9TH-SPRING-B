@@ -5,7 +5,7 @@ import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
-import spring.umc.domain.review.dto.ReviewDto;
+import spring.umc.domain.review.dto.res.ReviewResDto;
 import spring.umc.domain.review.entity.QReply;
 import spring.umc.domain.review.entity.QReview;
 import spring.umc.domain.store.entity.QStore;
@@ -19,7 +19,7 @@ public class ReviewQueryDslImpl implements ReviewQueryDsl {
     private final JPAQueryFactory queryFactory;
 
     @Override
-    public List<ReviewDto> findMyReviews (
+    public List<ReviewResDto.MyReviewItem> findMyReviews (
         Predicate predicate
     ) {
         
@@ -30,7 +30,7 @@ public class ReviewQueryDslImpl implements ReviewQueryDsl {
 
         return queryFactory
                 .select(Projections.constructor(
-                        ReviewDto.class,
+                        ReviewResDto.MyReviewItem.class,
                         review.id,
                         review.content,
                         review.star,

@@ -1,11 +1,11 @@
-package spring.umc.domain.review.service;
+package spring.umc.domain.review.service.query;
 
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Predicate;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import spring.umc.domain.review.dto.ReviewDto;
+import spring.umc.domain.review.dto.res.ReviewResDto;
 import spring.umc.domain.review.entity.QReview;
 import spring.umc.domain.review.repository.ReviewRepository;
 import spring.umc.domain.store.entity.QStore;
@@ -15,11 +15,11 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
-public class ReviewQueryService {
+public class ReviewQueryServiceImpl implements ReviewQueryService {
 
     private final ReviewRepository reviewRepository;
 
-    public List<ReviewDto> findMyReviews(Long memberId, Long storeId, String storeName, Integer star){
+    public List<ReviewResDto.MyReviewItem> findMyReviews(Long memberId, Long storeId, String storeName, Integer star){
         
         // Q클래스 정의
         QReview review = QReview.review;
