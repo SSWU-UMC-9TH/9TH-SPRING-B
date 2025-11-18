@@ -1,0 +1,12 @@
+package spring.umc.domain.mission.repository;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import spring.umc.domain.mission.entity.mapping.MemberMission;
+
+public interface MemberMissionRepository extends JpaRepository<MemberMission, Long> {
+
+    /**
+     * (홈화면) 달성한 미션 개수 조회
+     */
+    Long countByMemberIdAndIsCompleteTrue(Long memberId);
+}
