@@ -22,7 +22,7 @@ public class ReviewService {
      * 리뷰 작성 (사진 제외)
      */
     @Transactional
-    public Review writeReview(Long memberId, Long storeId, int star, String content) {
+    public Review writeReview(Long memberId, Long storeId, double star, String content) {
 
         // 중복 작성 여부 확인
         boolean alreadyExists = !reviewRepository.existsByMemberIdAndStoreId(memberId, storeId);
@@ -35,8 +35,8 @@ public class ReviewService {
         Store store = storeRepository.findById(storeId)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 가게입니다."));
 
-        if (star < 1 || star > 5) {
-            throw new IllegalArgumentException("별점은 1~5 사이의 값이어야 합니다.");
+        if (star < 0.0 || star > 5.0) {
+            throw new IllegalArgumentException("별점은 0.0~5.0 사이의 값이어야 합니다.");
         }
 
         Review review = Review.builder()
