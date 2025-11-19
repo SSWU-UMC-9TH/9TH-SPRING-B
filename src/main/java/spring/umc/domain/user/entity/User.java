@@ -56,4 +56,18 @@ public class User extends BaseEntity {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<UserMission> userMissionList;
+
+    @Builder
+    public User(String nickname, Gender gender, LocalDate birth) {
+        this.nickname = nickname;
+        this.gender = gender;
+        this.birth = birth;
+    }
+
+    // 주소는 따로 저장
+    public void updateAddress(UserAddress address) {
+        this.userAddress = address;
+        address.setUser(this);
+    }
+
 }
