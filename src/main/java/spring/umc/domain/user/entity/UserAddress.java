@@ -14,6 +14,7 @@ public class UserAddress extends BaseEntity {
     @Column(name = "user_id")
     private Long userId;
 
+    @Setter
     @MapsId
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
@@ -27,5 +28,11 @@ public class UserAddress extends BaseEntity {
 
     @Column(length = 50)
     private String detailAddress;
+
+    public UserAddress(String postalCode, String baseAddress, String detailAddress) {
+        this.postalCode = postalCode;
+        this.baseAddress = baseAddress;
+        this.detailAddress = detailAddress;
+    }
 
 }

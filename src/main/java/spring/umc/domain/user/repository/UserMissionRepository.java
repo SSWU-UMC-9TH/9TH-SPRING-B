@@ -58,4 +58,7 @@ public interface UserMissionRepository extends JpaRepository<UserMission,Long> {
             @Param("cursorId") Long cursorId,
             Pageable pageable
     );
+    
+    // 사용자가 해당 미션에 이미 도전했는지 확인
+    boolean existsByUserIdAndMissionId(Long userId, Long missionId);
 }
