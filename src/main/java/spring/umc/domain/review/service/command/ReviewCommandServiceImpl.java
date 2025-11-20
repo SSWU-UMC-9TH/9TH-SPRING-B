@@ -12,6 +12,8 @@ import spring.umc.domain.review.exception.ReviewException;
 import spring.umc.domain.review.exception.code.ReviewErrorCode;
 import spring.umc.domain.review.repository.ReviewRepository;
 import spring.umc.domain.store.entity.Store;
+import spring.umc.domain.store.exception.code.StoreErrorCode;
+import spring.umc.domain.store.exception.code.StoreException;
 import spring.umc.domain.store.repository.StoreRepsitory;
 
 @Service
@@ -36,13 +38,10 @@ public class ReviewCommandServiceImpl implements ReviewCommandService {
         }
 
         Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new MemberException(MemberErrorCode.MEMBER404_1));
+                .orElseThrow(() -> new MemberException(MemberErrorCode.NOT_FOUND));
 
         Store store = storeRepository.findById(storeId)
-                .orElseThrow(() ->
-                        // 스토어 전용 코드가 있으면 사용, 없으면 리뷰 도메인 404 사용
-                        new ReviewException(ReviewErrorCode.REVIEW404_1)
-                );
+                .orElseThrow(() -> new StoreException(StoreErrorCode.NOT_FOUND));
 
         if (star < 0.0 || star > 5.0) {
             throw new ReviewException(ReviewErrorCode.REVIEW400_2);

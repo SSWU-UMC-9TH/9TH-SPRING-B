@@ -9,4 +9,7 @@ public interface MemberMissionRepository extends JpaRepository<MemberMission, Lo
      * (홈화면) 달성한 미션 개수 조회
      */
     Long countByMemberIdAndIsCompleteTrue(Long memberId);
+
+    // 중복 도전 방지
+    boolean existsByMemberIdAndMissionId(Long memberId, Long missionId);
 }

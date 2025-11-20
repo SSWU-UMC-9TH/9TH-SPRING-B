@@ -3,7 +3,15 @@ package spring.umc.domain.member.dto.res;
 import lombok.Builder;
 import lombok.Getter;
 
-public class MemberResDto {
+import java.time.LocalDateTime;
+
+public class MemberResDTO {
+
+    @Builder
+    public record JoinDTO(
+            Long memberId,
+            LocalDateTime createdAt
+    ){}
 
     @Getter
     @Builder

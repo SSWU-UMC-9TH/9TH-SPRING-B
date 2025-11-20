@@ -66,13 +66,26 @@ public class Member extends BaseEntity {
     @Column(name = "inactive_date")
     private LocalDateTime inactiveDate;
 
+    @OneToOne(mappedBy = "member", cascade = CascadeType.ALL)
+    private Address address;
+
+    // 양방향 매핑
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Builder.Default
     private List<MemberFood> memberFoodList = new ArrayList<>();
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Builder.Default
     private List<MemberTerm> memberTermList = new ArrayList<>();
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Builder.Default
     private List<MemberMission> memberMissionList = new ArrayList<>();
 
+    public void setAddress(Address address) {
+        this.address = address;
+        if (address != null) {
+            address.setMember(this);
+        }
+    }
 }

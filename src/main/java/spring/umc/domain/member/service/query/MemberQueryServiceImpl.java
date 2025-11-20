@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import spring.umc.domain.member.converter.MemberConverter;
-import spring.umc.domain.member.dto.res.MemberResDto;
+import spring.umc.domain.member.dto.res.MemberResDTO;
 import spring.umc.domain.member.entity.Member;
 import spring.umc.domain.member.exception.MemberException;
 import spring.umc.domain.member.exception.code.MemberErrorCode;
@@ -21,10 +21,10 @@ public class MemberQueryServiceImpl implements  MemberQueryService {
      */
     @Override
     @Transactional(readOnly = true)
-    public MemberResDto.MyPage getMyPage(Long memberId) {
+    public MemberResDTO.MyPage getMyPage(Long memberId) {
 
         Member m = memberRepository.findById(memberId)
-                .orElseThrow(() -> new MemberException(MemberErrorCode.MEMBER404_1));
+                .orElseThrow(() -> new MemberException(MemberErrorCode.NOT_FOUND));
 
         return MemberConverter.toMyPage(m);
     }
