@@ -1,18 +1,22 @@
-package spring.umc.domain.review.service;
+package spring.umc.domain.review.service.command;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import spring.umc.domain.member.entity.Member;
+import spring.umc.domain.member.exception.MemberException;
+import spring.umc.domain.member.exception.code.MemberErrorCode;
 import spring.umc.domain.member.repository.MemberRepository;
 import spring.umc.domain.review.entity.Review;
+import spring.umc.domain.review.exception.ReviewException;
+import spring.umc.domain.review.exception.code.ReviewErrorCode;
 import spring.umc.domain.review.repository.ReviewRepository;
 import spring.umc.domain.store.entity.Store;
 import spring.umc.domain.store.repository.StoreRepsitory;
 
 @Service
 @RequiredArgsConstructor
-public class ReviewService {
+public class ReviewCommandServiceImpl implements ReviewCommandService {
 
     private final ReviewRepository reviewRepository;
     private final MemberRepository memberRepository;
@@ -21,22 +25,27 @@ public class ReviewService {
     /**
      * 리뷰 작성 (사진 제외)
      */
+    @Override
     @Transactional
-    public Review writeReview(Long memberId, Long storeId, double star, String content) {
+    public Long writeReview(Long memberId, Long storeId, double star, String content) {
 
         // 중복 작성 여부 확인
-        boolean alreadyExists = !reviewRepository.existsByMemberIdAndStoreId(memberId, storeId);
+        boolean alreadyExists = reviewRepository.existsByMemberIdAndStoreId(memberId, storeId);
         if (alreadyExists) {
-            throw new IllegalStateException("이미 해당 가게에 리뷰를 작성한 적이 있습니다.");
+            throw new ReviewException(ReviewErrorCode.REVIEW409_1);
         }
 
         Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다."));
+                .orElseThrow(() -> new MemberException(MemberErrorCode.MEMBER404_1));
+
         Store store = storeRepository.findById(storeId)
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 가게입니다."));
+                .orElseThrow(() ->
+                        // 스토어 전용 코드가 있으면 사용, 없으면 리뷰 도메인 404 사용
+                        new ReviewException(ReviewErrorCode.REVIEW404_1)
+                );
 
         if (star < 0.0 || star > 5.0) {
-            throw new IllegalArgumentException("별점은 0.0~5.0 사이의 값이어야 합니다.");
+            throw new ReviewException(ReviewErrorCode.REVIEW400_2);
         }
 
         Review review = Review.builder()
@@ -46,7 +55,7 @@ public class ReviewService {
                 .content(content)
                 .build();
 
-        return reviewRepository.save(review); // INSERT 자동 실행
+        return reviewRepository.save(review).getId(); // INSERT 자동 실행
 
     }
 }
