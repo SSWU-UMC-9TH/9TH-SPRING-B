@@ -13,7 +13,8 @@ public class ReviewReqDto {
         private Long storeId;
 
         @Min(0) @Max(5)
-        private double star;
+        @NotNull
+        private Double star;
 
         @NotBlank
         private String content;

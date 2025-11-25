@@ -39,9 +39,6 @@ public class MissionQueryServiceImpl implements MissionQueryService {
         var pageable  = PageRequest.of(0, PAGE_SIZE_DEFAULT);
 
         List<Object[]> rows = missionRepository.findOngoingMissions(memberId, cursor, pageable);
-        if (rows == null) {
-            throw new MissionException(MissionErrorCode.NOT_FOUND);
-        }
 
         return MissionConverter.toOngoingPage(rows, PAGE_SIZE_DEFAULT);
     }
@@ -55,9 +52,6 @@ public class MissionQueryServiceImpl implements MissionQueryService {
         var pageable  = PageRequest.of(0, PAGE_SIZE_DEFAULT);
 
         List<Object[]> rows = missionRepository.findCompletedMissions(memberId, cursor, pageable);
-        if (rows == null) {
-            throw new MissionException(MissionErrorCode.NOT_FOUND);
-        }
 
         return MissionConverter.toCompletedPage(rows, PAGE_SIZE_DEFAULT);
     }
@@ -72,9 +66,6 @@ public class MissionQueryServiceImpl implements MissionQueryService {
         var pageable  = PageRequest.of(0, PAGE_SIZE_CHALLENGE);
 
         List<Object[]> rows = missionRepository.findChallengableMissions(legalDongCode, memberId, cursor, pageable);
-        if (rows == null) {
-            throw new MissionException(MissionErrorCode.NOT_FOUND);
-        }
 
         return MissionConverter.toChallengablePage(rows, PAGE_SIZE_CHALLENGE);
     }
@@ -87,10 +78,6 @@ public class MissionQueryServiceImpl implements MissionQueryService {
     @Transactional(readOnly = true)
     public MissionResDto.CompletedCount getCompletedMissionCount(Long memberId) {
         Long count = memberMissionRepository.countByMemberIdAndIsCompleteTrue(memberId);
-
-        if (count == null) {
-            throw new MissionException(MissionErrorCode.NOT_FOUND);
-        }
 
         return MissionConverter.toCompletedCount(memberId, count);
     }
