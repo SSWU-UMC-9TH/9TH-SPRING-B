@@ -30,15 +30,15 @@ public class MemberMissionCommandServiceImpl implements MemberMissionCommandServ
 
         // 1. 회원 존재 여부 확인
         Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new MemberException(MemberErrorCode.NOT_FOUND));
+                .orElseThrow(() -> new MemberException(MemberErrorCode.MEMBER_NOT_FOUND));
 
         // 2. 미션 존재 여부 확인
         Mission mission = missionRepository.findById(missionId)
-                .orElseThrow(() -> new MissionException(MissionErrorCode.NOT_FOUND));
+                .orElseThrow(() -> new MissionException(MissionErrorCode.MISSION_NOT_FOUND));
 
         // 3. 이미 도전한 미션인지 중복 체크
         if (memberMissionRepository.existsByMemberIdAndMissionId(memberId, missionId)) {
-            throw new MissionException(MissionErrorCode.ALREADY_CHALLENGED);
+            throw new MissionException(MissionErrorCode.MISSION_ALREADY_CHALLENGED);
         }
 
         // 4. MemberMission 생성 (도전 상태: isComplete = false)

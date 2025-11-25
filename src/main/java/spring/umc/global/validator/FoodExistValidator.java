@@ -24,7 +24,7 @@ public class FoodExistValidator implements ConstraintValidator<ExistFoods, List<
         if (!isValid) {
             // 이 부분에서 아까 디폴트 메시지를 초기화 시키고, 새로운 메시지로 덮어씌우게 됩니다.
             context.disableDefaultConstraintViolation();
-            context.buildConstraintViolationWithTemplate(FoodErrorCode.NOT_FOUND.getMessage()).addConstraintViolation();
+            context.buildConstraintViolationWithTemplate(FoodErrorCode.FOOD_NOT_FOUND.getMessage()).addConstraintViolation();
         }
 
         return isValid;

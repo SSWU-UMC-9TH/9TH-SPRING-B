@@ -9,7 +9,7 @@ import spring.umc.global.apiPayload.code.BaseSuccessCode;
 @AllArgsConstructor
 public enum MemberSuccessCode implements BaseSuccessCode {
 
-    FOUND(HttpStatus.OK,
+    MEMBER_FOUND(HttpStatus.OK,
             "MEMBER200_1",
             "성공적으로 사용자를 조회했습니다."),
     ;

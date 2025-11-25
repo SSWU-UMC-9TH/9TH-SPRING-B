@@ -9,7 +9,7 @@ import spring.umc.global.apiPayload.code.BaseErrorCode;
 @AllArgsConstructor
 public enum AddressErrorCode implements BaseErrorCode {
 
-    ADDRESS404_1(
+    ADDRESS_NOT_FOUND(
             HttpStatus.NOT_FOUND,
             "ADDRESS404_1",
             "해당 회원의 주소가 없습니다."

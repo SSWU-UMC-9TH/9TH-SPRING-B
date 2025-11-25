@@ -9,7 +9,7 @@ import spring.umc.global.apiPayload.code.BaseErrorCode;
 @AllArgsConstructor
 public enum MemberErrorCode implements BaseErrorCode {
 
-    NOT_FOUND(
+    MEMBER_NOT_FOUND(
             HttpStatus.NOT_FOUND,
             "MEMBER404_1",
             "해당 사용자를 찾지 못했습니다."),

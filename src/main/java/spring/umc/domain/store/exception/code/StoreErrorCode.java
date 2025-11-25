@@ -9,9 +9,9 @@ import spring.umc.global.apiPayload.code.BaseErrorCode;
 @AllArgsConstructor
 public enum StoreErrorCode implements BaseErrorCode {
 
-    NOT_FOUND(
+    STORE_NOT_FOUND(
             HttpStatus.NOT_FOUND,
-            "ADDRESS404_1",
+            "STORE404_1",
             "해당 가게가 존재하지 않습니다."
     ),
     ;

@@ -24,7 +24,7 @@ public class MemberController {
     public ApiResponse<MemberResDTO.JoinDTO> signUp(
             @RequestBody @Valid MemberReqDTO.JoinDTO dto
     ){
-        return ApiResponse.onSuccess(MemberSuccessCode.FOUND, memberCommandService.signup(dto));
+        return ApiResponse.onSuccess(MemberSuccessCode.MEMBER_FOUND, memberCommandService.signup(dto));
     }
 
     @GetMapping("/{memberId}/mypage")

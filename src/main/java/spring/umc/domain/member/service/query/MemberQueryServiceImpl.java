@@ -24,7 +24,7 @@ public class MemberQueryServiceImpl implements  MemberQueryService {
     public MemberResDTO.MyPage getMyPage(Long memberId) {
 
         Member m = memberRepository.findById(memberId)
-                .orElseThrow(() -> new MemberException(MemberErrorCode.NOT_FOUND));
+                .orElseThrow(() -> new MemberException(MemberErrorCode.MEMBER_NOT_FOUND));
 
         return MemberConverter.toMyPage(m);
     }

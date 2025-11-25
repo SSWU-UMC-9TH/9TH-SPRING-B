@@ -23,7 +23,7 @@ public class AddressQueryServiceImpl implements AddressQueryService {
     @Transactional(readOnly = true)
     public MemberResDTO.LegalDong getLegalDongInfo(Long memberId) {
         Address a = addressRepository.findByMemberId(memberId)
-                .orElseThrow(() -> new AddressException(AddressErrorCode.ADDRESS404_1));
+                .orElseThrow(() -> new AddressException(AddressErrorCode.ADDRESS_NOT_FOUND));
 
         return MemberConverter.toLegalDong(a);
     }

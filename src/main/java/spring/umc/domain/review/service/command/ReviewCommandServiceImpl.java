@@ -34,17 +34,17 @@ public class ReviewCommandServiceImpl implements ReviewCommandService {
         // 중복 작성 여부 확인
         boolean alreadyExists = reviewRepository.existsByMemberIdAndStoreId(memberId, storeId);
         if (alreadyExists) {
-            throw new ReviewException(ReviewErrorCode.REVIEW409_1);
+            throw new ReviewException(ReviewErrorCode.DUPLICATE_REVIEW);
         }
 
         Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new MemberException(MemberErrorCode.NOT_FOUND));
+                .orElseThrow(() -> new MemberException(MemberErrorCode.MEMBER_NOT_FOUND));
 
         Store store = storeRepository.findById(storeId)
-                .orElseThrow(() -> new StoreException(StoreErrorCode.NOT_FOUND));
+                .orElseThrow(() -> new StoreException(StoreErrorCode.STORE_NOT_FOUND));
 
         if (star < 0.0 || star > 5.0) {
-            throw new ReviewException(ReviewErrorCode.REVIEW400_2);
+            throw new ReviewException(ReviewErrorCode.INVALID_REVIEW_REQUEST);
         }
 
         Review review = Review.builder()

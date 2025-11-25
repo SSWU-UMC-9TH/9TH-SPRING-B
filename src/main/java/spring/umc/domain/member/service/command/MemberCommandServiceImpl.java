@@ -64,7 +64,7 @@ public class MemberCommandServiceImpl implements MemberCommandService{
                     .map(id -> MemberFood.builder()
                             .member(member)
                             .food(foodRepository.findById(id)
-                                    .orElseThrow(() -> new FoodException(FoodErrorCode.NOT_FOUND)))
+                                    .orElseThrow(() -> new FoodException(FoodErrorCode.FOOD_NOT_FOUND)))
                             .build()
                     )
                     .collect(Collectors.toList());

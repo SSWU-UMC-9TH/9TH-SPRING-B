@@ -9,7 +9,7 @@ import spring.umc.global.apiPayload.code.BaseErrorCode;
 @AllArgsConstructor
 public enum FoodErrorCode implements BaseErrorCode {
 
-    NOT_FOUND(
+    FOOD_NOT_FOUND(
             HttpStatus.NOT_FOUND,
             "FOOD404_1",
             "해당 음식을 찾지 못했습니다."),
