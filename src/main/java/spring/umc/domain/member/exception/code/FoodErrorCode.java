@@ -7,13 +7,12 @@ import spring.umc.global.apiPayload.code.BaseErrorCode;
 
 @Getter
 @AllArgsConstructor
-public enum AddressErrorCode implements BaseErrorCode {
+public enum FoodErrorCode implements BaseErrorCode {
 
-    ADDRESS_NOT_FOUND(
+    FOOD_NOT_FOUND(
             HttpStatus.NOT_FOUND,
-            "ADDRESS404_1",
-            "해당 회원의 주소가 없습니다."
-    ),
+            "FOOD404_1",
+            "해당 음식을 찾지 못했습니다."),
     ;
 
     private final HttpStatus status;

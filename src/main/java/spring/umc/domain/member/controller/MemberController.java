@@ -1,11 +1,12 @@
 package spring.umc.domain.member.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import spring.umc.domain.member.dto.res.MemberResDto;
+import org.springframework.web.bind.annotation.*;
+import spring.umc.domain.member.dto.req.MemberReqDTO;
+import spring.umc.domain.member.dto.res.MemberResDTO;
+import spring.umc.domain.member.exception.code.MemberSuccessCode;
+import spring.umc.domain.member.service.command.MemberCommandService;
 import spring.umc.domain.member.service.query.MemberQueryService;
 import spring.umc.global.apiPayload.ApiResponse;
 import spring.umc.global.apiPayload.code.GeneralSuccessCode;
@@ -15,10 +16,19 @@ import spring.umc.global.apiPayload.code.GeneralSuccessCode;
 @RequestMapping("/members")
 public class MemberController {
 
+    private final MemberCommandService memberCommandService;
     private final MemberQueryService memberQueryService;
 
+    // 회원가입
+    @PostMapping("/sign-up")
+    public ApiResponse<MemberResDTO.JoinDTO> signUp(
+            @RequestBody @Valid MemberReqDTO.JoinDTO dto
+    ){
+        return ApiResponse.onSuccess(MemberSuccessCode.MEMBER_FOUND, memberCommandService.signup(dto));
+    }
+
     @GetMapping("/{memberId}/mypage")
-    public ApiResponse<MemberResDto.MyPage> getMyPage(@PathVariable Long memberId){
+    public ApiResponse<MemberResDTO.MyPage> getMyPage(@PathVariable Long memberId){
         return ApiResponse.onSuccess(
                 GeneralSuccessCode.OK,
                 memberQueryService.getMyPage(memberId)

@@ -3,6 +3,7 @@ package spring.umc.domain.mission.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import spring.umc.domain.mission.dto.res.MissionResDto;
+import spring.umc.domain.mission.service.command.MemberMissionCommandService;
 import spring.umc.domain.mission.service.query.MissionQueryService;
 import spring.umc.global.apiPayload.ApiResponse;
 import spring.umc.global.apiPayload.code.GeneralSuccessCode;
@@ -13,9 +14,10 @@ import spring.umc.global.apiPayload.code.GeneralSuccessCode;
 public class MissionController {
 
     private final MissionQueryService missionQueryService;
+    private final MemberMissionCommandService memberMissionCommandService;
 
     // <진행 중> 미션 목록 조회 (커서 기반 페이징)
-    @GetMapping("/ongoing")
+    @GetMapping(params = "status=ongoing")
     public ApiResponse<MissionResDto.CursorPage<MissionResDto.OngoingItem>> ongoing(
             @PathVariable Long memberId,
             @RequestParam(required = false) Long cursor
@@ -27,7 +29,7 @@ public class MissionController {
     }
 
     // <진행 완료> 미션 목록 조회 (커서 기반 페이징)
-    @GetMapping("/completed")
+    @GetMapping(params = "status=completed")
     public ApiResponse<MissionResDto.CursorPage<MissionResDto.CompletedItem>> completed(
             @PathVariable Long memberId,
             @RequestParam(required = false) Long cursor
@@ -62,5 +64,16 @@ public class MissionController {
                 GeneralSuccessCode.OK,
                 missionQueryService.getCompletedMissionCount(memberId)
         );
+    }
+
+
+    // 가게의 미션을 도전 중인 미션에 추가(미션 도전하기)
+    @PostMapping("/{missionId}/challenge")
+    public ApiResponse<MissionResDto.OngoingItem> challenge(
+            @PathVariable Long memberId,
+            @PathVariable Long missionId
+    ){
+        MissionResDto.OngoingItem result = memberMissionCommandService.challenge(memberId, missionId);
+        return ApiResponse.onSuccess(GeneralSuccessCode.OK, result);
     }
 }

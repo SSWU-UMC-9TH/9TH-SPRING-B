@@ -36,7 +36,7 @@ public class ReviewController {
         );
     }
 
-    // 리뷰 작성
+    // 가게에 리뷰 추가하기
     @PostMapping
     public ApiResponse<ReviewResDto.Created> createReview(
             @PathVariable Long memberId,
