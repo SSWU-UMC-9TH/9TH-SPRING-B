@@ -45,7 +45,7 @@ public class MissionQueryServiceImpl implements MissionQueryService {
 
         List<Object[]> rows = missionRepository.findOngoingMissions(memberId, cursor, pageable);
 
-        return MissionConverter.toOngoingPage(rows, PAGE_SIZE_DEFAULT);
+        return MissionConverter.toOngoingCursorPage(rows, PAGE_SIZE_DEFAULT);
     }
 
     // 내가 진행 중인 미션 목록 (page 기반)
@@ -72,7 +72,7 @@ public class MissionQueryServiceImpl implements MissionQueryService {
 
         List<Object[]> rows = missionRepository.findCompletedMissions(memberId, cursor, pageable);
 
-        return MissionConverter.toCompletedPage(rows, PAGE_SIZE_DEFAULT);
+        return MissionConverter.toCompletedCursorPage(rows, PAGE_SIZE_DEFAULT);
     }
 
     /**
@@ -86,7 +86,7 @@ public class MissionQueryServiceImpl implements MissionQueryService {
 
         List<Object[]> rows = missionRepository.findChallengableMissions(legalDongCode, memberId, cursor, pageable);
 
-        return MissionConverter.toChallengablePage(rows, PAGE_SIZE_CHALLENGE);
+        return MissionConverter.toChallengableCursorPage(rows, PAGE_SIZE_CHALLENGE);
     }
 
     /**

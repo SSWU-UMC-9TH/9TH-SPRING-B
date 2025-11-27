@@ -9,7 +9,7 @@ import spring.umc.global.apiPayload.code.BaseSuccessCode;
 @AllArgsConstructor
 public enum ReviewSuccessCode implements BaseSuccessCode {
 
-    REVIEW_FOUND(HttpStatus.FOUND,
+    REVIEW_FOUND(HttpStatus.OK,
             "REVIEW200_1",
             "성공적으로 리뷰를 찾았습니다."),
     ;

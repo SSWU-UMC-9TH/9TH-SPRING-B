@@ -12,7 +12,7 @@ import java.util.List;
 public class MissionConverter {
 
     // 진행중 페이지 변환 (커서 기반)
-    public static MissionResDTO.CursorPage<MissionResDTO.OngoingItem> toOngoingPage(List<Object[]> rows, int limit) {
+    public static MissionResDTO.CursorPage<MissionResDTO.OngoingItem> toOngoingCursorPage(List<Object[]> rows, int limit) {
         var items = rows.stream().map(r ->
                 MissionResDTO.OngoingItem.builder()
                         .missionId((Long) r[0])
@@ -40,7 +40,7 @@ public class MissionConverter {
     ) {
         return MissionResDTO.OngoingListDTO.builder()
                 .missionList(result.getContent().stream()
-                        .map(MissionConverter::toOngoingItem)
+                        .map(MissionConverter::toOngoingItemFromMission)
                         .toList()
                 )
                 .listSize(result.getSize())
@@ -50,7 +50,8 @@ public class MissionConverter {
                 .isLast(result.isLast())
                 .build();
     }
-    private static MissionResDTO.OngoingItem toOngoingItem(Mission mission) {
+    // (Mission -> OngoingItem)
+    private static MissionResDTO.OngoingItem toOngoingItemFromMission(Mission mission) {
         return MissionResDTO.OngoingItem.builder()
                 .missionId(mission.getId())
                 .point(mission.getPoint())
@@ -63,8 +64,8 @@ public class MissionConverter {
     }
 
     // 미션 도전하기
-    // 단일 MemberMission -> OngoingItem
-    public static MissionResDTO.OngoingItem toOngoingItem(MemberMission memberMission) {
+    // (MemberMission -> OngoingItem)
+    public static MissionResDTO.OngoingItem toOngoingItemFromMemberMission(MemberMission memberMission) {
         Mission mission = memberMission.getMission();
 
         return MissionResDTO.OngoingItem.builder()
@@ -76,8 +77,20 @@ public class MissionConverter {
                 .build();
     }
 
-    // 진행 완료 페이지
-    public static MissionResDTO.CursorPage<MissionResDTO.CompletedItem> toCompletedPage(List<Object[]> rows, int limit) {
+    // 진행 중인 미션 진행 완료로 바꾸기
+    // (Mission -> CompletedItem)
+    public static MissionResDTO.CompletedItem toCompletedItem(Mission mission) {
+        return MissionResDTO.CompletedItem.builder()
+                .missionId(mission.getId())
+                .point(mission.getPoint())
+                .condition(mission.getCondition())
+                .storeName(mission.getStore().getName())
+                .complete(true)
+                .build();
+    }
+
+    // 진행 완료 페이지 (커서 기반)
+    public static MissionResDTO.CursorPage<MissionResDTO.CompletedItem> toCompletedCursorPage(List<Object[]> rows, int limit) {
         var items = rows.stream().map(r ->
                 MissionResDTO.CompletedItem.builder()
                         .missionId((Long) r[0])
@@ -97,8 +110,8 @@ public class MissionConverter {
                 .build();
     }
 
-    // 도전 가능 페이지
-    public static MissionResDTO.CursorPage<MissionResDTO.ChallengableItem> toChallengablePage(List<Object[]> rows, int limit) {
+    // 도전 가능 페이지 (커서 기반)
+    public static MissionResDTO.CursorPage<MissionResDTO.ChallengableItem> toChallengableCursorPage(List<Object[]> rows, int limit) {
         var items = rows.stream().map(r ->
                 MissionResDTO.ChallengableItem.builder()
                         .missionId((Long) r[0])
@@ -126,7 +139,7 @@ public class MissionConverter {
                 .build();
     }
 
-    // 특정 가게의 미션 목록
+    // 특정 가게의 미션 목록 (page 기반)
     public static MissionResDTO.StoreMissionListDTO toStoreMissionListDTO(
             Page<Mission> result
     ) {
@@ -143,7 +156,7 @@ public class MissionConverter {
                 .isLast(result.isLast())
                 .build();
     }
-
+    // (Mission -> StoreMissionDTO)
     public static MissionResDTO.StoreMissionDTO toStoreMissionDTO(
             Mission mission
     ) {

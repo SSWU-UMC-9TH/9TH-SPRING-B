@@ -32,6 +32,7 @@ public class MissionResDTO {
         private final boolean complete; // 항상 false지만 쿼리 결과 반영
     }
 
+    // 진행 완료
     @Getter
     @Builder
     public static class CompletedItem {
@@ -79,7 +80,6 @@ public class MissionResDTO {
             Boolean isFirst,
             Boolean isLast
     ) {}
-
     @Getter
     @Builder
     public static class StoreMissionDTO {
