@@ -8,7 +8,7 @@ import spring.umc.domain.member.exception.MemberException;
 import spring.umc.domain.member.exception.code.MemberErrorCode;
 import spring.umc.domain.member.repository.MemberRepository;
 import spring.umc.domain.mission.converter.MissionConverter;
-import spring.umc.domain.mission.dto.res.MissionResDto;
+import spring.umc.domain.mission.dto.res.MissionResDTO;
 import spring.umc.domain.mission.entity.Mission;
 import spring.umc.domain.mission.entity.mapping.MemberMission;
 import spring.umc.domain.mission.exception.MissionException;
@@ -26,7 +26,7 @@ public class MemberMissionCommandServiceImpl implements MemberMissionCommandServ
 
     @Override
     @Transactional
-    public MissionResDto.OngoingItem challenge(Long memberId, Long missionId) {
+    public MissionResDTO.OngoingItem challenge(Long memberId, Long missionId) {
 
         // 1. 회원 존재 여부 확인
         Member member = memberRepository.findById(memberId)

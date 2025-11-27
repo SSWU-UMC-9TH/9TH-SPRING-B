@@ -25,7 +25,7 @@ public class ReviewController implements ReviewControllerDocs {
     private final ReviewQueryService reviewQueryService;
     private final ReviewCommandService reviewCommandService;
 
-    // 내가 작성한 리뷰 목록
+    // 내가 작성한 리뷰 목록 API
     @GetMapping("/members/{memberId}/reviews")
     public ApiResponse<ReviewResDTO.MyReviewListDTO> getMyReviews(
             @PathVariable Long memberId,
