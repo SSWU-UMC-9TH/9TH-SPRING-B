@@ -14,7 +14,7 @@ public interface ReviewQueryService {
     ) throws Exception;
 
     ReviewResponseDto.ReviewPreViewListDTO findReview(
-            String storeName,
+            Long storeId,
             Integer page
     );
 }

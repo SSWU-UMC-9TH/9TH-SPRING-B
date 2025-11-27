@@ -29,18 +29,16 @@ public class ReviewQueryServiceImpl implements ReviewQueryService {
 
     @Override
     public ReviewResponseDto.ReviewPreViewListDTO findReview(
-            String storeName,
+            Long storeId,
             Integer page
     ){
-        // - 가게를 가져온다 (가게 존재 여부 검증)
-        Store store = storeRepository.findByName(storeName)
+        Store store = storeRepository.findById(storeId)
                 .orElseThrow(() -> new StoreException(StoreErrorCode.NOT_FOUND));
 
-        //- 가게에 맞는 리뷰를 가져온다 (Offset 페이징)
-        PageRequest pageRequest = PageRequest.of(page, 5);
+        // 조건: 한 페이지에 10개씩
+        PageRequest pageRequest = PageRequest.of(page, 10);
         Page<Review> result = reviewRepository.findAllByStore(store, pageRequest);
 
-        //- 결과를 응답 DTO로 변환한다 (컨버터 이용)
         return ReviewConverter.toReviewPreviewListDTO(result);
     }
 }

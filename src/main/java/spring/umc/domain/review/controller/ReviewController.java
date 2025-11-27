@@ -3,6 +3,7 @@ package spring.umc.domain.review.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,6 +23,7 @@ import spring.umc.global.apiPayload.code.GeneralSuccessCode;
 
 import java.util.List;
 
+@Tag(name = "Review", description = "리뷰 조회 API")
 @RestController
 @RequestMapping("/reviews")
 @RequiredArgsConstructor
@@ -36,14 +38,12 @@ public class ReviewController {
             @RequestParam String type
     ) throws Exception {
 
-        // 서비스에게 요청
-        List<Review> result = reviewQueryService.searchReview(filter, type);
-        return result;
+        return reviewQueryService.searchReview(filter, type);
     }
 
     // 가게의 리뷰 목록 조회
     @Operation(
-            summary = "가게의 리뷰 목록 조회 API By 마크 (개발 중)",
+            summary = "가게의 리뷰 목록 조회",
             description = "특정 가게의 리뷰를 모두 조회합니다. 페이지네이션으로 제공합니다."
     )
     @ApiResponses({
@@ -52,12 +52,15 @@ public class ReviewController {
     })
     @GetMapping
     public ApiResponse<ReviewResponseDto.ReviewPreViewListDTO> getReviews(
-            @RequestParam String storeName,
-            @RequestParam Integer page
+            @RequestParam Long storeId,
+            @Parameter(description = "1 이상의 페이지 번호", example = "1")
+            @PageParam Integer page
     ){
 
-        ReviewSuccessCode code = ReviewSuccessCode.FOUND;
-        return ApiResponse.onSuccess(code, null);
+        ReviewResponseDto.ReviewPreViewListDTO result =
+                reviewQueryService.findReview(storeId, page);  // 0-based
+
+        return ApiResponse.onSuccess(ReviewSuccessCode.FOUND, result);
     }
 
     @GetMapping("/me")
