@@ -9,6 +9,17 @@ import java.util.List;
 
 public class MissionResDTO {
 
+    // 내가 진행 중인 미션 목록 (page 기반 페이징)
+    @Builder
+    public record OngoingListDTO(
+            List<OngoingItem> missionList,
+            Integer listSize,
+            Integer totalPage,
+            Long totalElements,
+            Boolean isFirst,
+            Boolean isLast
+    ) {}
+
     @Getter
     @Builder
     public static class OngoingItem {
@@ -16,6 +27,8 @@ public class MissionResDTO {
         private final Integer point;
         private final String condition;
         private final String storeName;
+        private final LocalDateTime createdAt;
+        private final LocalDate endedAt;
         private final boolean complete; // 항상 false지만 쿼리 결과 반영
     }
 

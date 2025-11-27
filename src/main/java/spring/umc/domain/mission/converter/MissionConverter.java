@@ -6,11 +6,12 @@ import spring.umc.domain.mission.entity.Mission;
 import spring.umc.domain.mission.entity.mapping.MemberMission;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 public class MissionConverter {
 
-    // 진행중 페이지 변환
+    // 진행중 페이지 변환 (커서 기반)
     public static MissionResDTO.CursorPage<MissionResDTO.OngoingItem> toOngoingPage(List<Object[]> rows, int limit) {
         var items = rows.stream().map(r ->
                 MissionResDTO.OngoingItem.builder()
@@ -18,7 +19,9 @@ public class MissionConverter {
                         .point((Integer) r[1])
                         .condition((String) r[2])
                         .storeName((String) r[3])
-                        .complete((Boolean) r[4])
+                        .createdAt((LocalDateTime) r[4])
+                        .endedAt((LocalDate) r[5])
+                        .complete((Boolean) r[6])
                         .build()
         ).toList();
 
@@ -28,6 +31,34 @@ public class MissionConverter {
                 .items(items)
                 .nextCursor(next)
                 .size(items.size())
+                .build();
+    }
+
+    // 내가 진행 중인 미션 목록 (page 기반)
+    public static MissionResDTO.OngoingListDTO toOngoingListDTO(
+            Page<Mission> result
+    ) {
+        return MissionResDTO.OngoingListDTO.builder()
+                .missionList(result.getContent().stream()
+                        .map(MissionConverter::toOngoingItem)
+                        .toList()
+                )
+                .listSize(result.getSize())
+                .totalPage(result.getTotalPages())
+                .totalElements(result.getTotalElements())
+                .isFirst(result.isFirst())
+                .isLast(result.isLast())
+                .build();
+    }
+    private static MissionResDTO.OngoingItem toOngoingItem(Mission mission) {
+        return MissionResDTO.OngoingItem.builder()
+                .missionId(mission.getId())
+                .point(mission.getPoint())
+                .condition(mission.getCondition())
+                .storeName(mission.getStore().getName())
+                .createdAt(mission.getCreatedAt())
+                .endedAt(mission.getEndedAt())
+                .complete(false) // 진행 중 목록이므로 false 고정
                 .build();
     }
 

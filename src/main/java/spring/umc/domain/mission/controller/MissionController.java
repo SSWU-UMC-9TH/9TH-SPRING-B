@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import spring.umc.domain.mission.dto.res.MissionResDTO;
+import spring.umc.domain.mission.exception.code.MissionSuccessCode;
 import spring.umc.domain.mission.service.command.MemberMissionCommandService;
 import spring.umc.domain.mission.service.query.MissionQueryService;
 import spring.umc.domain.review.exception.code.ReviewSuccessCode;
@@ -20,7 +21,7 @@ public class MissionController implements MissionControllerDocs {
     private final MemberMissionCommandService memberMissionCommandService;
 
     // <진행 중> 미션 목록 조회 (커서 기반 페이징)
-    @GetMapping(value = "/members/{memberId}/missions", params = "status=ongoing")
+    @GetMapping(value = "/members/{memberId}/missions", params = {"status=ongoing", "cursor"})
     public ApiResponse<MissionResDTO.CursorPage<MissionResDTO.OngoingItem>> ongoing(
             @PathVariable Long memberId,
             @RequestParam(required = false) Long cursor
@@ -28,6 +29,18 @@ public class MissionController implements MissionControllerDocs {
         return ApiResponse.onSuccess(
                 GeneralSuccessCode.OK,
                 missionQueryService.getOngoingMissions(memberId, cursor)
+        );
+    }
+
+    // 내가 진행 중인 미션 목록 API (page 기반 페이징)
+    @GetMapping(value = "/members/{memberId}/missions", params = {"status=ongoing", "page"})
+    public ApiResponse<MissionResDTO.OngoingListDTO> ongoingByPage(
+            @PathVariable Long memberId,
+            @ValidPage @RequestParam(defaultValue = "1") Integer page
+    ){
+        return ApiResponse.onSuccess(
+                MissionSuccessCode.MISSION_FOUND,
+                missionQueryService.getOngoingMissionsByPage(memberId, page)
         );
     }
 
@@ -77,7 +90,7 @@ public class MissionController implements MissionControllerDocs {
     ) {
 
         return ApiResponse.onSuccess(
-                ReviewSuccessCode.REVIEW_FOUND,
+                MissionSuccessCode.MISSION_FOUND,
                 missionQueryService.getStoreMissions(storeId, page)
         );
     }

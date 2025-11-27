@@ -1,7 +1,6 @@
 package spring.umc.domain.mission.service.query;
 
 import lombok.RequiredArgsConstructor;
-import org.junit.jupiter.api.extension.ExtensionContext;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -47,6 +46,20 @@ public class MissionQueryServiceImpl implements MissionQueryService {
         List<Object[]> rows = missionRepository.findOngoingMissions(memberId, cursor, pageable);
 
         return MissionConverter.toOngoingPage(rows, PAGE_SIZE_DEFAULT);
+    }
+
+    // 내가 진행 중인 미션 목록 (page 기반)
+    @Override
+    public MissionResDTO.OngoingListDTO getOngoingMissionsByPage(
+            Long memberId,
+            Integer page   // 1-based
+    ) {
+        // 1-based → 0-based 변환
+        PageRequest pageRequest = PageRequest.of(page - 1, 10);
+
+        Page<Mission> result = missionRepository.findOngoingMissionsByPage(memberId, pageRequest);
+
+        return MissionConverter.toOngoingListDTO(result);
     }
 
     /**
