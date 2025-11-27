@@ -48,4 +48,8 @@ public class Address extends BaseEntity {
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id", nullable = false)
     private Member member;
+
+    public void setMember(Member member) {
+        this.member = member;
+    }
 }

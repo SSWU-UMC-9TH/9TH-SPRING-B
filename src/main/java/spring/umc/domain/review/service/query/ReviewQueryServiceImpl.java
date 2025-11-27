@@ -4,12 +4,20 @@ import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import spring.umc.domain.review.dto.res.ReviewResDto;
+import spring.umc.domain.review.converter.ReviewConverter;
+import spring.umc.domain.review.dto.res.ReviewResDTO;
 import spring.umc.domain.review.entity.QReview;
+import spring.umc.domain.review.entity.Review;
 import spring.umc.domain.review.repository.ReviewRepository;
 import spring.umc.domain.store.entity.QStore;
+import spring.umc.domain.store.entity.Store;
+import spring.umc.domain.store.exception.code.StoreErrorCode;
+import spring.umc.domain.store.exception.code.StoreException;
+import spring.umc.domain.store.repository.StoreRepository;
 
 import java.util.List;
 
@@ -19,8 +27,16 @@ import java.util.List;
 public class ReviewQueryServiceImpl implements ReviewQueryService {
 
     private final ReviewRepository reviewRepository;
+    private final StoreRepository storeRepository;
 
-    public List<ReviewResDto.MyReviewItem> findMyReviews(Long memberId, Long storeId, String storeName, Integer star) {
+    // 내가 작성한 리뷰 목록 조회
+    public ReviewResDTO.MyReviewListDTO findMyReviews(
+            Long memberId,
+            Long storeId,
+            String storeName,
+            Integer star,
+            Integer page // 1-based
+    ) {
 
         // Q클래스 정의
         QReview review = QReview.review;
@@ -41,10 +57,47 @@ public class ReviewQueryServiceImpl implements ReviewQueryService {
         // Predicate로 조립하여 Repository로 전달
         Predicate predicate = builder;
 
+        // 0-based로 변환
+        PageRequest pageRequest = PageRequest.of(page - 1, 10); 
+
         // 조립된 조건(Predicate)을 기반으로 QueryDSL 쿼리 실행
-        return reviewRepository.findMyReviews(predicate);
+        List<ReviewResDTO.MyReviewDTO> contents =
+                reviewRepository.findMyReviews(predicate, pageRequest);
+
+        long totalElements = reviewRepository.countMyReviews(predicate);
+
+        return ReviewConverter.toMyReviewListDTO(contents, pageRequest, totalElements);
 
     }
+
+    @Override
+    public List<Review> searchReview(String filter, String type) throws Exception {
+        // TODO: 실제 검색 로직
+        //return reviewRepository.searchReview(filter, type);
+        return null;
+    }
+
+
+    // 가게의 리뷰 목록
+    @Override
+    public ReviewResDTO.ReviewPreViewListDTO findReview(
+            String storeName,
+            Integer page
+    ){
+        // - 가게를 가져온다 (가게 존재 여부 검증)
+        Store store = storeRepository.findByName(storeName)
+                //    - 없으면 예외 터뜨린다
+                .orElseThrow(() -> new StoreException(StoreErrorCode.STORE_NOT_FOUND));
+
+        //- 가게에 맞는 리뷰를 가져온다 (Offset 페이징)
+        // 프론트에서 전달되는 page는 1-based -> PageRequest는 0-based 이므로 -1 처리
+        PageRequest pageRequest = PageRequest.of(page - 1, 10);
+        Page<Review> result = reviewRepository.findAllByStore(store, pageRequest);
+
+        //- 결과를 응답 DTO로 변환한다 (컨버터 이용)
+        return ReviewConverter.toReviewPreviewListDTO(result);
+    }
+
 
     // 가게 필터 (선택)
     private BooleanExpression eqStoreId(Long storeId) {

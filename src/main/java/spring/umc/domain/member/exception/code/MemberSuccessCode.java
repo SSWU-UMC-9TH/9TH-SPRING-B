@@ -3,17 +3,15 @@ package spring.umc.domain.member.exception.code;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
-import spring.umc.global.apiPayload.code.BaseErrorCode;
+import spring.umc.global.apiPayload.code.BaseSuccessCode;
 
 @Getter
 @AllArgsConstructor
-public enum AddressErrorCode implements BaseErrorCode {
+public enum MemberSuccessCode implements BaseSuccessCode {
 
-    ADDRESS_NOT_FOUND(
-            HttpStatus.NOT_FOUND,
-            "ADDRESS404_1",
-            "해당 회원의 주소가 없습니다."
-    ),
+    MEMBER_FOUND(HttpStatus.OK,
+            "MEMBER200_1",
+            "성공적으로 사용자를 조회했습니다."),
     ;
 
     private final HttpStatus status;

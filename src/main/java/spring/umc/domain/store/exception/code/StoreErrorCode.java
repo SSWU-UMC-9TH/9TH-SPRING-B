@@ -1,4 +1,4 @@
-package spring.umc.domain.member.exception.code;
+package spring.umc.domain.store.exception.code;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -7,12 +7,12 @@ import spring.umc.global.apiPayload.code.BaseErrorCode;
 
 @Getter
 @AllArgsConstructor
-public enum AddressErrorCode implements BaseErrorCode {
+public enum StoreErrorCode implements BaseErrorCode {
 
-    ADDRESS_NOT_FOUND(
+    STORE_NOT_FOUND(
             HttpStatus.NOT_FOUND,
-            "ADDRESS404_1",
-            "해당 회원의 주소가 없습니다."
+            "STORE404_1",
+            "해당 가게가 존재하지 않습니다."
     ),
     ;
 
@@ -20,3 +20,4 @@ public enum AddressErrorCode implements BaseErrorCode {
     private final String code;
     private final String message;
 }
+

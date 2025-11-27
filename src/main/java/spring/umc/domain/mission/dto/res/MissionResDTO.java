@@ -4,9 +4,21 @@ import lombok.Builder;
 import lombok.Getter;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
-public class MissionResDto {
+public class MissionResDTO {
+
+    // 내가 진행 중인 미션 목록 (page 기반 페이징)
+    @Builder
+    public record OngoingListDTO(
+            List<OngoingItem> missionList,
+            Integer listSize,
+            Integer totalPage,
+            Long totalElements,
+            Boolean isFirst,
+            Boolean isLast
+    ) {}
 
     @Getter
     @Builder
@@ -15,9 +27,12 @@ public class MissionResDto {
         private final Integer point;
         private final String condition;
         private final String storeName;
+        private final LocalDateTime createdAt;
+        private final LocalDate endedAt;
         private final boolean complete; // 항상 false지만 쿼리 결과 반영
     }
 
+    // 진행 완료
     @Getter
     @Builder
     public static class CompletedItem {
@@ -53,6 +68,27 @@ public class MissionResDto {
     public static class CompletedCount {
         private final Long memberId;
         private final Long count;
+    }
+
+    // 특정 가게의 미션 목록
+    @Builder
+    public record StoreMissionListDTO(
+            List<StoreMissionDTO> missionList,
+            Integer listSize,
+            Integer totalPage,
+            Long totalElements,
+            Boolean isFirst,
+            Boolean isLast
+    ) {}
+    @Getter
+    @Builder
+    public static class StoreMissionDTO {
+        private final Long missionId;
+        private final Integer point;
+        private final String condition;
+        private final LocalDateTime createdAt;
+        private final LocalDate endedAt;
+        private final String storeName;
     }
 
 }

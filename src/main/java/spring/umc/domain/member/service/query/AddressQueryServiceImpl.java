@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import spring.umc.domain.member.converter.MemberConverter;
-import spring.umc.domain.member.dto.res.MemberResDto;
+import spring.umc.domain.member.dto.res.MemberResDTO;
 import spring.umc.domain.member.entity.Address;
 import spring.umc.domain.member.exception.AddressException;
 import spring.umc.domain.member.exception.code.AddressErrorCode;
@@ -21,9 +21,9 @@ public class AddressQueryServiceImpl implements AddressQueryService {
      */
     @Override
     @Transactional(readOnly = true)
-    public MemberResDto.LegalDong getLegalDongInfo(Long memberId) {
+    public MemberResDTO.LegalDong getLegalDongInfo(Long memberId) {
         Address a = addressRepository.findByMemberId(memberId)
-                .orElseThrow(() -> new AddressException(AddressErrorCode.ADDRESS404_1));
+                .orElseThrow(() -> new AddressException(AddressErrorCode.ADDRESS_NOT_FOUND));
 
         return MemberConverter.toLegalDong(a);
     }

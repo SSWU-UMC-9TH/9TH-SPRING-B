@@ -6,7 +6,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 
-public class ReviewReqDto {
+public class ReviewReqDTO {
     @Getter
     public static class Create {
         @NotNull
