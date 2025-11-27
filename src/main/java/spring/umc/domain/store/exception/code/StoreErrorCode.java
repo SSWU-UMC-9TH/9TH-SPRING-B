@@ -1,4 +1,4 @@
-package spring.umc.domain.review.exception.code;
+package spring.umc.domain.store.exception.code;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -7,15 +7,11 @@ import spring.umc.global.apiPayload.code.BaseErrorCode;
 
 @Getter
 @AllArgsConstructor
-public enum ReviewErrorCode implements BaseErrorCode {
-
-    UNAUTHORIZED(HttpStatus.UNAUTHORIZED,
-            "USM401_1",
-            "완료되지 않은 미션입니다."),
+public enum StoreErrorCode implements BaseErrorCode {
 
     NOT_FOUND(HttpStatus.NOT_FOUND,
-            "REVIEW404_1",
-            "해당 리뷰를 찾을 수 없습니다."),
+            "STORE404_1",
+            "요청한 리소스를 찾을 수 없습니다."),
     ;
 
     private final HttpStatus status;

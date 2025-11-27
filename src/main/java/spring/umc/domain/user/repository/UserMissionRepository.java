@@ -1,10 +1,12 @@
 package spring.umc.domain.user.repository;
 
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import spring.umc.domain.mission.dto.MissionResponseDto;
 import spring.umc.domain.user.dto.AvailableMissionDto;
 import spring.umc.domain.user.dto.UserMissionDto;
 import spring.umc.domain.user.entity.MissionStatus;
@@ -61,4 +63,17 @@ public interface UserMissionRepository extends JpaRepository<UserMission,Long> {
     
     // 사용자가 해당 미션에 이미 도전했는지 확인
     boolean existsByUserIdAndMissionId(Long userId, Long missionId);
+
+    @Query("SELECT new spring.umc.domain.user.dto.UserMissionDto(um.status, m.name, s.name) " +
+            "FROM UserMission um " +
+            "JOIN um.mission m " +
+            "JOIN m.store s " +
+            "WHERE um.user.id = :userId " +
+            "  AND um.status = :status " +
+            "ORDER BY um.id DESC")
+    Page<MissionResponseDto.MyMissionDto> findMyMissionsPage(
+            @Param("userId") Long userId,
+            @Param("status") MissionStatus status,
+            Pageable pageable
+    );
 }

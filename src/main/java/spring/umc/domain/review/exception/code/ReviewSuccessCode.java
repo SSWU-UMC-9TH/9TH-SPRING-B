@@ -10,8 +10,13 @@ import spring.umc.global.apiPayload.code.BaseSuccessCode;
 public enum ReviewSuccessCode implements BaseSuccessCode {
 
     CREATED(HttpStatus.CREATED,
-            "201_1",
+            "CREATED201_1",
             "성공적으로 리뷰를 작성했습니다."),
+
+    FOUND(HttpStatus.OK,
+            "FOUND200_1",
+            "리뷰를 성공적으로 조회했습니다."
+            )
     ;
 
     private final HttpStatus status;

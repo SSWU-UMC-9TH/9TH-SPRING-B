@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import spring.umc.domain.review.dto.MyReviewResponseDto;
 import spring.umc.domain.review.entity.Review;
+import spring.umc.domain.review.repository.ReviewQueryDslImpl;
 import spring.umc.domain.review.repository.ReviewRepository;
 import spring.umc.domain.user.entity.MissionStatus;
 import spring.umc.domain.user.entity.UserMission;
@@ -20,6 +21,7 @@ public class ReviewService {
 
     private final ReviewRepository reviewRepository;
     private final UserMissionRepository userMissionRepository;
+    private final ReviewQueryDslImpl reviewQueryDsl;
 
     @Transactional
     public Review createReview(Long userMissionId, String content, int star) {
@@ -50,9 +52,9 @@ public class ReviewService {
                                                   Long storeId,
                                                   String storeName,
                                                   Integer star,
-                                                  int page,
-                                                  int size) {
-        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "createdAt"));
-        return reviewRepository.searchMyReviews(userId, storeId, storeName, star, pageable);
+                                                  int pageZeroBased) {
+        Pageable pageable = PageRequest.of(pageZeroBased, 10);
+
+        return reviewQueryDsl.searchMyReviews(userId, storeId, storeName, star, pageable);
     }
 }

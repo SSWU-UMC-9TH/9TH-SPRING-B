@@ -9,5 +9,4 @@ public class ReviewRequestDto {
             String content,
             List<String> images
     ) {}
-
 }
