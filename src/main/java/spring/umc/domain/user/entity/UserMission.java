@@ -27,4 +27,11 @@ public class UserMission extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "mission_id", nullable = false)
     private Mission mission;
+
+    @Builder
+    public UserMission(User user, Mission mission, MissionStatus status) {
+        this.user = user;
+        this.mission = mission;
+        this.status = (status != null) ? status : MissionStatus.NOT_STARTED;
+    }
 }

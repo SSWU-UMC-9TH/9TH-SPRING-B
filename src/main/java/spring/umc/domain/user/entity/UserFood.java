@@ -29,4 +29,11 @@ public class UserFood extends BaseEntity {
     @MapsId("foodCategoryId")
     @JoinColumn(name = "food_category_id")
     private FoodCategory foodCategory;
+
+    @Builder
+    public UserFood(Long userId, FoodCategory foodCategory, User user) {
+        this.userId = userId;
+        this.foodCategory = foodCategory;
+        this.user = user;
+    }
 }

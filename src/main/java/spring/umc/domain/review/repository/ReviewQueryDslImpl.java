@@ -1,5 +1,6 @@
 package spring.umc.domain.review.repository;
 
+import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
@@ -20,16 +21,26 @@ public class ReviewQueryDslImpl implements ReviewQueryDsl {
     private final JPAQueryFactory queryFactory;
 
     @Override
-    public Page<MyReviewResponseDto> searchMyReviews(Long userId,
-                                                     Long storeId,
-                                                     String storeName,
-                                                     Integer star,
-                                                     Pageable pageable) {
+    // where절 빼먹는 거 없게 리팩토링 진행
+    public Page<MyReviewResponseDto> searchMyReviews(
+            Long userId,
+            Long storeId,
+            String storeName,
+            Integer star,
+            Pageable pageable) {
 
         QReview review = QReview.review;
         QStore store = QStore.store;
 
-        var query = queryFactory
+        // 1. 공통 where 조건 만들기
+        BooleanBuilder builder = new BooleanBuilder();
+        builder.and(review.user.id.eq(userId));
+        if (storeId != null) builder.and(store.id.eq(storeId));
+        if (storeName != null) builder.and(store.name.contains(storeName));
+        if (star != null) builder.and(review.star.eq(star));
+
+        // 2. content 조회 쿼리
+        List<MyReviewResponseDto> content = queryFactory
                 .select(Projections.constructor(
                         MyReviewResponseDto.class,
                         review.id,
@@ -39,32 +50,20 @@ public class ReviewQueryDslImpl implements ReviewQueryDsl {
                 ))
                 .from(review)
                 .join(review.store, store)
-                .where(
-                        review.user.id.eq(userId),
-                        storeId != null ? store.id.eq(storeId) : null,
-                        storeName != null ? store.name.contains(storeName) : null,
-                        star != null ? review.star.eq(star) : null
-                )
+                .where(builder)
                 .offset(pageable.getOffset())
-                .limit(pageable.getPageSize());
+                .limit(pageable.getPageSize())
+                .fetch();
 
-        List<MyReviewResponseDto> content = query.fetch();
-
-        Long totalCount = queryFactory
+        // 3. count 쿼리는 select만 다르게
+        Long total = queryFactory
                 .select(review.count())
                 .from(review)
                 .join(review.store, store)
-                .where(
-                        review.user.id.eq(userId),
-                        storeId != null ? store.id.eq(storeId) : null,
-                        storeName != null ? store.name.contains(storeName) : null,
-                        star != null ? review.star.eq(star) : null
-                )
+                .where(builder)
                 .fetchOne();
 
-        long total = (totalCount != null) ? totalCount : 0L;
-
-        return new PageImpl<>(content, pageable, total);
-
+        return new PageImpl<>(content, pageable, total == null ? 0 : total);
     }
+    
 }

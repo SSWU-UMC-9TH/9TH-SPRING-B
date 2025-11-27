@@ -5,9 +5,9 @@ import spring.umc.domain.user.entity.MissionStatus;
 
 @Getter
 public class UserMissionDto {
-    private MissionStatus status;
-    private String missionName;
-    private String storeName;
+    private final MissionStatus status;
+    private final String missionName;
+    private final String storeName;
 
     public UserMissionDto(MissionStatus status, String missionName, String storeName) {
         this.status = status;
