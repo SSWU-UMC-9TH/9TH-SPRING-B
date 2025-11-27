@@ -14,7 +14,7 @@ import spring.umc.domain.review.repository.ReviewRepository;
 import spring.umc.domain.store.entity.Store;
 import spring.umc.domain.store.exception.code.StoreErrorCode;
 import spring.umc.domain.store.exception.code.StoreException;
-import spring.umc.domain.store.repository.StoreRepsitory;
+import spring.umc.domain.store.repository.StoreRepository;
 
 @Service
 @RequiredArgsConstructor
@@ -22,7 +22,7 @@ public class ReviewCommandServiceImpl implements ReviewCommandService {
 
     private final ReviewRepository reviewRepository;
     private final MemberRepository memberRepository;
-    private final StoreRepsitory storeRepository;
+    private final StoreRepository storeRepository;
 
     /**
      * 리뷰 작성 (사진 제외)

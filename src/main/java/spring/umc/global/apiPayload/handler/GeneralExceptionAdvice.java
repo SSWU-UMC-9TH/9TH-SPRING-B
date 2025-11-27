@@ -1,5 +1,6 @@
 package spring.umc.global.apiPayload.handler;
 
+import jakarta.validation.ConstraintViolationException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -59,4 +60,28 @@ public class GeneralExceptionAdvice {
         // 에러 코드, 메시지와 함께 errors를 반환
         return ResponseEntity.status(code.getStatus()).body(errorResponse);
     }
+
+
+    // @RequestParam, @PathVariable 등에 대한 Bean Validation 에러 처리 (@ValidPage 포함)
+    @ExceptionHandler(ConstraintViolationException.class)
+    public ResponseEntity<ApiResponse<Map<String, String>>> handleConstraintViolationException(
+            ConstraintViolationException ex
+    ){
+        Map<String, String> errors = new HashMap<>();
+
+        ex.getConstraintViolations().forEach(violation -> {
+            // ex: "getMyReviews.page" → "page"만 추출
+            String fullPath = violation.getPropertyPath().toString();
+            String field = fullPath.substring(fullPath.lastIndexOf('.') + 1);
+
+            errors.put(field, violation.getMessage());
+        });
+
+        GeneralErrorCode code = GeneralErrorCode.VALID_FAIL;
+        ApiResponse<Map<String, String>> errorResponse = ApiResponse.onFailure(code, errors);
+
+        return ResponseEntity.status(code.getStatus()).body(errorResponse);
+    }
+
+
 }
