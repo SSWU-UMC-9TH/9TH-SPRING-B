@@ -1,6 +1,7 @@
 package spring.umc.domain.auth.service.command;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import spring.umc.domain.auth.converter.AuthConverter;
 import spring.umc.domain.auth.dto.AuthReqDto;
@@ -9,6 +10,7 @@ import spring.umc.domain.store.entity.FoodCategory;
 import spring.umc.domain.store.exception.FoodException;
 import spring.umc.domain.store.exception.code.FoodErrorCode;
 import spring.umc.domain.store.repository.FoodCategoryRepository;
+import spring.umc.domain.user.entity.Role;
 import spring.umc.domain.user.entity.User;
 import spring.umc.domain.user.entity.UserFood;
 import spring.umc.domain.user.repository.UserFoodRepository;
@@ -24,12 +26,16 @@ public class AuthCommandServiceImpl implements AuthCommandService {
     private final UserRepository userRepository;
     private final UserFoodRepository userFoodRepository;
     private final FoodCategoryRepository foodCategoryRepository;
+    private final PasswordEncoder passwordEncoder;
 
     // 회원가입
     @Override
     public AuthResDto.JoinDto signUp(AuthReqDto.JoinDto dto) {
+
+        String salt = passwordEncoder.encode(dto.password());
+
         // 사용자 생성
-        User user = AuthConverter.toUser(dto);
+        User user = AuthConverter.toUser(dto, salt, Role.ROLE_USER);;
         // DB 적용
         userRepository.save(user);
 

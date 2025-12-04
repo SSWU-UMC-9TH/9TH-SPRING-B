@@ -9,6 +9,10 @@ import spring.umc.global.apiPayload.code.BaseErrorCode;
 @AllArgsConstructor
 public enum AuthErrorCode implements BaseErrorCode {
 
+    INVALID(HttpStatus.UNAUTHORIZED,
+            "AUTH401_1",
+            "제대로 된 비밀번호를 입력해주세요."),
+
     NOT_FOUND(HttpStatus.NOT_FOUND,
             "AUTH404_1",
                     "해당 사용자를 찾지 못했습니다."),

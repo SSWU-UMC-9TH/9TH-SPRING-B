@@ -24,6 +24,12 @@ public class User extends BaseEntity {
     @Column(length = 50, nullable = false)
     private String email;
 
+    @Column(nullable = false)
+    private String password;
+
+    @Enumerated(EnumType.STRING)
+    private Role role;
+
     @Column(length = 25)
     private String phoneNumber;
 
@@ -58,8 +64,12 @@ public class User extends BaseEntity {
     private List<UserMission> userMissionList;
 
     @Builder
-    public User(String nickname, Gender gender, LocalDate birth) {
+    public User(String nickname, String email, String password,
+                Role role, Gender gender, LocalDate birth) {
         this.nickname = nickname;
+        this.email = email;
+        this.password = password;
+        this.role = role;
         this.gender = gender;
         this.birth = birth;
     }
