@@ -13,4 +13,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
     // 마이 페이지 화면 쿼리
     @Query("SELECT new spring.umc.domain.user.dto.MyPageDto(u.nickname, u.email, u.phoneNumber, u.phoneVerified, u.point) FROM User u WHERE u.id = :userId")
     Optional<MyPageDto> findUserForMyPage(@Param("userId") Long userId);
+
+    Optional<User> findByEmail(String email);
 }

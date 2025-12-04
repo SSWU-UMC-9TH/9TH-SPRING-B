@@ -33,4 +33,9 @@ public class ReviewImg extends BaseEntity implements Serializable {
             review.getImages().add(this);
         }
     }
+
+    public ReviewImg(String imgUrl, Integer order) {
+        this.imgUrl = imgUrl;
+        this.order = order;
+    }
 }
