@@ -8,6 +8,7 @@ import spring.umc.domain.member.enums.Gender;
 import spring.umc.domain.member.enums.ProviderType;
 import spring.umc.domain.member.enums.Status;
 import spring.umc.domain.mission.entity.mapping.MemberMission;
+import spring.umc.global.auth.enums.Role;
 import spring.umc.global.entity.BaseEntity;
 
 import java.time.LocalDate;
@@ -53,14 +54,20 @@ public class Member extends BaseEntity {
     @Builder.Default
     private Boolean phoneVerified = false;
 
-    @Column(name = "email", length = 255, nullable = false)
+    @Column(name = "email", length = 255, nullable = false, unique = true)
     private String email;
+
+    @Column(nullable = false)
+    private String password;
+
+    @Enumerated(EnumType.STRING)
+    private Role role;
 
     @Column(name = "provider_type", length = 20, nullable = false)
     @Enumerated(EnumType.STRING)
     private ProviderType providerType;
 
-    @Column(name = "provider_uid", length = 100, nullable = false)
+    @Column(name = "provider_uid", length = 100)
     private String providerUid;
 
     @Column(name = "inactive_date")

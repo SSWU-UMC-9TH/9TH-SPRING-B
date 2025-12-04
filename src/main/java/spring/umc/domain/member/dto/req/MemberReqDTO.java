@@ -1,5 +1,6 @@
 package spring.umc.domain.member.dto.req;
 
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import spring.umc.domain.member.entity.Address;
@@ -20,9 +21,14 @@ public class MemberReqDTO {
             @NotBlank String legalDongCode
     ){}
 
+    // 회원가입
     public record JoinDTO(
             @NotBlank
             String name,
+            @Email
+            String email,
+            @NotBlank
+            String password,
             @NotNull
             Gender gender,
             @NotNull
@@ -33,5 +39,13 @@ public class MemberReqDTO {
             String specAddress,
             @ExistFoods
             List<Long> preferCategory
+    ){}
+
+    // 로그인
+    public record LoginDTO(
+            @NotBlank
+            String email,
+            @NotBlank
+            String password
     ){}
 }

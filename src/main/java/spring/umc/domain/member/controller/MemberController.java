@@ -24,7 +24,15 @@ public class MemberController {
     public ApiResponse<MemberResDTO.JoinDTO> signUp(
             @RequestBody @Valid MemberReqDTO.JoinDTO dto
     ){
-        return ApiResponse.onSuccess(MemberSuccessCode.MEMBER_FOUND, memberCommandService.signup(dto));
+        return ApiResponse.onSuccess(MemberSuccessCode.MEMBER_SIGNUP_SUCCESS, memberCommandService.signup(dto));
+    }
+
+    // 로그인
+    @PostMapping("/login")
+    public ApiResponse<MemberResDTO.LoginDTO> login(
+            @RequestBody @Valid MemberReqDTO.LoginDTO dto
+    ){
+        return ApiResponse.onSuccess(MemberSuccessCode.MEMBER_LOGIN_SUCCESS, memberQueryService.login(dto));
     }
 
     @GetMapping("/{memberId}/mypage")

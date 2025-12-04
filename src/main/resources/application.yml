@@ -1,4 +1,7 @@
 spring:
+  profiles:
+    active: jwt   # session/jwt 중 하나로
+
   application:
     name: "umc9th"
 
@@ -17,3 +20,9 @@ spring:
     properties:
       hibernate:
         format_sql: true # 출력되는 SQL 쿼리를 보기 좋게 포맷팅
+
+jwt:
+  token:
+    secretKey: ZGh3YWlkc2F2ZXdhZXZ3b2EgMTM5ZXUgMDMxdWMyIHEyMiBAIDAgKTJFVio=
+    expiration:
+      access: 14400000 # 4시간

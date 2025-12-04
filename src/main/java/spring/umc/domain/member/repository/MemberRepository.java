@@ -12,4 +12,8 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     // 없어도 됨. JpaRepository에 이미 정의돼 있음
     Optional<Member> findById(Long id);
 
+
+    Optional<Member> findByEmail(String email);
+
+
 }
