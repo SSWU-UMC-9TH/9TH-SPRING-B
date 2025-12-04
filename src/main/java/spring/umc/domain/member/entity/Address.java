@@ -24,7 +24,7 @@ public class Address extends BaseEntity {
     @Column(name = "road_address", length = 300, nullable = false)
     private String roadAddress;
 
-    @Column(name = "address_detail", length = 200, nullable = true)
+    @Column(name = "address_detail", length = 200)
     private String addressDetail;
 
     @Column(name = "full_address", length = 500, nullable = false)
@@ -36,16 +36,20 @@ public class Address extends BaseEntity {
     @Column(name = "legal_dong_code", columnDefinition = "CHAR(10)", nullable = false)
     private String legalDongCode;
 
-    @Column(name = "longitude", precision = 10, scale = 7, nullable = false)
+    @Column(name = "longitude", precision = 10, scale = 7)
     private BigDecimal longitude;
 
-    @Column(name = "latitude", precision = 10, scale = 7, nullable = false)
+    @Column(name = "latitude", precision = 10, scale = 7)
     private BigDecimal latitude;
 
-    @Column(name = "geocoded_at", nullable = false)
+    @Column(name = "geocoded_at")
     private LocalDateTime geocodedAt;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id", nullable = false)
     private Member member;
+
+    public void setMember(Member member) {
+        this.member = member;
+    }
 }

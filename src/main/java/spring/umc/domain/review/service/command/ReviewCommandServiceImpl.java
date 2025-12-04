@@ -12,7 +12,9 @@ import spring.umc.domain.review.exception.ReviewException;
 import spring.umc.domain.review.exception.code.ReviewErrorCode;
 import spring.umc.domain.review.repository.ReviewRepository;
 import spring.umc.domain.store.entity.Store;
-import spring.umc.domain.store.repository.StoreRepsitory;
+import spring.umc.domain.store.exception.code.StoreErrorCode;
+import spring.umc.domain.store.exception.code.StoreException;
+import spring.umc.domain.store.repository.StoreRepository;
 
 @Service
 @RequiredArgsConstructor
@@ -20,7 +22,7 @@ public class ReviewCommandServiceImpl implements ReviewCommandService {
 
     private final ReviewRepository reviewRepository;
     private final MemberRepository memberRepository;
-    private final StoreRepsitory storeRepository;
+    private final StoreRepository storeRepository;
 
     /**
      * 리뷰 작성 (사진 제외)
@@ -32,20 +34,17 @@ public class ReviewCommandServiceImpl implements ReviewCommandService {
         // 중복 작성 여부 확인
         boolean alreadyExists = reviewRepository.existsByMemberIdAndStoreId(memberId, storeId);
         if (alreadyExists) {
-            throw new ReviewException(ReviewErrorCode.REVIEW409_1);
+            throw new ReviewException(ReviewErrorCode.DUPLICATE_REVIEW);
         }
 
         Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new MemberException(MemberErrorCode.MEMBER404_1));
+                .orElseThrow(() -> new MemberException(MemberErrorCode.MEMBER_NOT_FOUND));
 
         Store store = storeRepository.findById(storeId)
-                .orElseThrow(() ->
-                        // 스토어 전용 코드가 있으면 사용, 없으면 리뷰 도메인 404 사용
-                        new ReviewException(ReviewErrorCode.REVIEW404_1)
-                );
+                .orElseThrow(() -> new StoreException(StoreErrorCode.STORE_NOT_FOUND));
 
         if (star < 0.0 || star > 5.0) {
-            throw new ReviewException(ReviewErrorCode.REVIEW400_2);
+            throw new ReviewException(ReviewErrorCode.INVALID_REVIEW_REQUEST);
         }
 
         Review review = Review.builder()
